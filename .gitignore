@@ -1,0 +1,14 @@
+/tempCodeRunnerFile.py
+*.pyc
+.venv/
+.venv/*
+/.venv/*
+/.venv/
+2026-03-19-fastapi-basics\SSC - Copy\frontend\.env
+2026-03-19-fastapi-basics\SSC - Copy\backend\.env
+2026-03-19-fastapi-basics\SSC\frontend\.env
+2026-03-19-2-ssc-project\backend\.env
+
+2026-03-19-fastapi-basics/SSC/backend/firebase-service-account.json
+2026-03-19-fastapi-basics/SSC/backend/.env
+.env

@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap');
+
+:root {
+  --bg: #f3f9f8;
+  --text: #183934;
+  --muted: #56706b;
+  --line: #d7e7e3;
+  --primary: #117d69;
+  --primary-deep: #0d5f50;
+  --accent: #f2a52f;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Manrope', 'Segoe UI', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  font-size: 14px;
+  border-radius: 8px;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
+}
+
+button.primary {
+  background-color: var(--primary);
+  color: white;
+}
+
+button.primary:hover {
+  background-color: var(--primary-deep);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+button.secondary {
+  background-color: var(--accent);
+  color: #243029;
+}
+
+button.secondary:hover {
+  background-color: #e69310;
+}
+
+input, textarea, select {
+  font-family: inherit;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(17, 125, 105, 0.14);
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Sora', 'Manrope', sans-serif;
+  letter-spacing: 0.2px;
+}

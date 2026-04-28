@@ -1,0 +1,111 @@
+.authContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 70px);
+  background:
+    radial-gradient(circle at 12% 20%, rgba(255, 178, 34, 0.28), transparent 35%),
+    radial-gradient(circle at 85% 15%, rgba(20, 168, 139, 0.33), transparent 35%),
+    linear-gradient(120deg, #123d35, #0e2f2a);
+  padding: 20px;
+}
+
+.authBox {
+  background: white;
+  padding: 40px;
+  border-radius: 14px;
+  box-shadow: 0 22px 38px rgba(10, 41, 37, 0.3);
+  width: 100%;
+  max-width: 400px;
+}
+
+.authBox h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #183a34;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: #214742;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cfe0dc;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.formGroup input:focus {
+  outline: none;
+  border-color: #0f7e68;
+  box-shadow: 0 0 0 3px rgba(15, 126, 104, 0.15);
+}
+
+.authBox button {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #11806b, #0f6254);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.authBox button + button {
+  margin-top: 10px;
+}
+
+.authBox button:hover:not(:disabled) {
+  opacity: 0.92;
+}
+
+.authBox button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error {
+  background-color: #ffe9e7;
+  color: #bd3f3a;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  border-left: 4px solid #cc4e48;
+}
+
+.success {
+  background-color: #e7f8f1;
+  color: #155d46;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  border-left: 4px solid #2f9a78;
+}
+
+.authBox p {
+  text-align: center;
+  margin-top: 20px;
+  color: #5b7772;
+}
+
+.authBox a {
+  color: #0f7e68;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.authBox a:hover {
+  text-decoration: underline;
+}

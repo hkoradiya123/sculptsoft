@@ -1,0 +1,143 @@
+.playersPage {
+  padding: 30px 20px;
+  min-height: calc(100vh - 70px);
+  background:
+    radial-gradient(circle at 8% 12%, rgba(17, 156, 131, 0.15), transparent 36%),
+    radial-gradient(circle at 88% 12%, rgba(255, 172, 26, 0.17), transparent 34%),
+    #f2f8f7;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.playersPage h1 {
+  text-align: center;
+  margin-bottom: 16px;
+  color: #173d37;
+  font-size: 36px;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.controls input,
+.controls select {
+  border: 1px solid #cfe1dc;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  background: #fff;
+}
+
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+  font-size: 18px;
+  color: #5f6368;
+}
+
+.playersList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.playerCard {
+  background: #ffffff;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(17, 57, 51, 0.09);
+  border: 1px solid #ddece8;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.playerCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(17, 57, 51, 0.14);
+}
+
+.playerHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 16px;
+}
+
+.playerHeader h3 {
+  color: #173d37;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.premiumBadge {
+  background-color: #fff2dc;
+  color: #b46700;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-grow: 1;
+}
+
+.stat {
+  text-align: center;
+  padding: 8px;
+  background-color: #f3faf8;
+  border-radius: 8px;
+}
+
+.label {
+  display: block;
+  font-size: 11px;
+  color: #56716c;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.value {
+  display: block;
+  font-size: 20px;
+  font-weight: bold;
+  color: #0f7d68;
+}
+
+.footer {
+  padding-top: 12px;
+  border-top: 1px solid #e3ece9;
+}
+
+.email {
+  font-size: 13px;
+  color: #56716c;
+}
+
+.noPlayers {
+  text-align: center;
+  padding: 40px;
+  color: #5f7772;
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 880px) {
+  .controls {
+    grid-template-columns: 1fr;
+  }
+}

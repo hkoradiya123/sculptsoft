@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "axit",
+    "price": 0.1,
+    "quantity": 1
+  },
+  {
+    "id": 2,
+    "name": "qwe",
+    "price": 12.0,
+    "quantity": 1
+  },
+  {
+    "id": 3,
+    "name": "harsh",
+    "price": 100.0,
+    "quantity": 1
+  }
+]
