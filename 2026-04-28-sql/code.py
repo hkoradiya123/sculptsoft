@@ -9,7 +9,7 @@ connector = mysql.connector.connect(
     database='ss'
 )
 cursor = connector.cursor()
-
+    
 
 query = "INSERT INTO emp (name, dept_id) VALUES (%s, %s), (%s, %s), (%s, %s)"
 values = ('gautam', 1, 'pari', 1, 'paro', 2)

@@ -1,57 +1,73 @@
-#! Product Class
-# Attributes:
-# product_id
-# name
-# price
-# quantity
+import mysql.connector
+from mysql.connector import Error
+from dbhelper import DBHelper
+from exceptions import (
+    DuplicateProductError,
+    InvalidPriceError,
+    InvalidQuantityError,
+    ProductNotFoundError,
+    InsufficientStockError
+)
+# import dotenv
+import os
+import dotenv
+from datetime import datetime
 
-#! Methods:
-# update_quantity()
-# update_price()
-# display_details()
+dotenv.load_dotenv()
 
-
-#! Guidelines
-# Use proper class design
-# Keep code modular
-# Handle errors
-# Avoid writing everything in one file
-
-#! Deliverables
-# Source code
-# README (how to run and features)
-# Sample output
-
-# * Evaluation
-# * OOP usage
-# * Code structure
-# * Feature completeness
-# * Edge case handling
-
+try:
+    db = DBHelper()
+    print("Database connection successful.")
+except Error as e:
+    print(f"Error occurred while connecting to the database: {e}")
 
 class Product:
-    id_counter = 1
-
-    def __init__(self, name, price, quantity, product_id=None):
-        if product_id is None:
-            self.id = Product.id_counter
-            Product.id_counter += 1
-        else:
-            self.id = product_id
+    def __init__(self, name, price):
         self.name = name
         self.price = price
-        self.quantity = quantity
 
-    def update_quantity(self, new_quantity):
-        self.quantity = new_quantity
+    def new_product(self, name, price, quantity):
+        try:
+            if price <= 0:
+                raise InvalidPriceError(price)
+            if quantity < 0:
+                raise InvalidQuantityError(quantity)
+            db.execute_query("""INSERT INTO product 
+                             (name, price) 
+                             VALUES (%s, %s)
+                             """,(name, price))
+            
+            db.execute_query("""
+                             insert into price_history 
+                             (product_id, price) 
+                             values (LAST_INSERT_ID(), %s)
+                             """, (price))
+        except Error as e:
+            print(f"Error occurred while adding product: {e}")
 
     def update_price(self, new_price):
         if new_price < 0:
             print("Price cannot be negative.")
-            return
-        self.price = new_price
+        else:
+            try:
+                db.execute_query("""
+                    UPDATE product 
+                    SET price = %s 
+                    WHERE product_id = %s
+                """, (new_price, self.id))
+                db.commit()
 
-    def display_details(self):
-        print(
-            f"ID: {self.id}, Name: {self.name}, Price: {self.price}, Quantity: {self.quantity}"
-        )
+            except Error as e:
+                db.rollback()
+                print(f"Error occurred while updating price: {e}")
+
+
+    def display_details(id):
+        result = db.execute_query("SELECT * FROM product WHERE product_id = %s", (id,))
+        if result != "No results found.":
+            product = result[0]
+            print(
+                f"ID: {product[0]}, Name: {product[1]}, Price: {product[2]}, Quantity: {product[3]}"
+            )
+        else:
+            print("Product not found.")
