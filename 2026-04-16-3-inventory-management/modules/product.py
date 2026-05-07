@@ -1,13 +1,7 @@
 import mysql.connector
 from mysql.connector import Error
-from dbhelper import DBHelper
-from exceptions import (
-    DuplicateProductError,
-    InvalidPriceError,
-    InvalidQuantityError,
-    ProductNotFoundError,
-    InsufficientStockError
-)
+from modules.dbhelper import DBHelper,db
+from modules.exceptions import *
 # import dotenv
 import os
 import dotenv
@@ -15,37 +9,36 @@ from datetime import datetime
 
 dotenv.load_dotenv()
 
-try:
-    db = DBHelper()
-    print("Database connection successful.")
-except Error as e:
-    print(f"Error occurred while connecting to the database: {e}")
 
 class Product:
     def __init__(self, name, price):
         self.name = name
         self.price = price
 
-    def new_product(self, name, price, quantity):
+    def new_product(self, name, price):
         try:
             if price <= 0:
                 raise InvalidPriceError(price)
-            if quantity < 0:
-                raise InvalidQuantityError(quantity)
             db.execute_query("""INSERT INTO product 
                              (name, price) 
                              VALUES (%s, %s)
                              """,(name, price))
-            
-            db.execute_query("""
-                             insert into price_history 
-                             (product_id, price) 
-                             values (LAST_INSERT_ID(), %s)
-                             """, (price))
+            db.commit()
+            print(f"Product '{name}' has been added with price {price}.")
         except Error as e:
             print(f"Error occurred while adding product: {e}")
 
-    def update_price(self, new_price):
+    def update_product_name(self, product_id, name=None):
+        try:
+
+            if name is not None:
+                db.execute_query("UPDATE product SET name = %s WHERE id = %s",
+                                (name, product_id))
+                print(f"Product with ID {product_id} has been updated.")
+        except Error as e:
+            print(f"Error occurred while updating product: {e}")
+
+    def update_product_price(self, product_id, new_price):
         if new_price < 0:
             print("Price cannot be negative.")
         else:
@@ -54,7 +47,7 @@ class Product:
                     UPDATE product 
                     SET price = %s 
                     WHERE product_id = %s
-                """, (new_price, self.id))
+                """, (new_price, product_id))
                 db.commit()
 
             except Error as e:
@@ -67,7 +60,17 @@ class Product:
         if result != "No results found.":
             product = result[0]
             print(
-                f"ID: {product[0]}, Name: {product[1]}, Price: {product[2]}, Quantity: {product[3]}"
+                f"ID: {product[0]}, Name: {product[1]}, Price: {product[2]}"
             )
         else:
             print("Product not found.")
+    
+    def get_products(self):
+        try:
+            db.execute("SELECT * FROM product")
+            result = db.fetchall()
+            return result if result != [] else "No products found."
+        except psycopg2.Error as err:
+            db.rollback()
+            print(f"Error: {err}")
+            return None

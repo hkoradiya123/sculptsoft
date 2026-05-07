@@ -1,6 +1,8 @@
 from modules import *
 import os
 import dotenv
+from modules.dbhelper import db
+
 
 dotenv.load_dotenv()
 
@@ -26,22 +28,29 @@ def read_float(prompt):
         except ValueError:
             print("Invalid input. Please enter a valid number.")
 
+@print_wait
+def new_product():
+    name = input("Enter product name: ")
+    price = read_float("Enter product price: ")
+    try:
+        Product.new_product(name, price)
+    except ValueError as e:
+        print(f"Error creating product: {e}")
+
 
 @print_wait
 def add_product():
     name = input("Enter product name: ")
     price = read_float("Enter product price: ")
     quantity = read_int("Enter product quantity: ")
-    product = Product(name, price, quantity)
     try:
-        myinventory.add_product(product)
-
+        Inventory.add_product(name, price, quantity)
     except ValueError as e:
         print(f"Error adding product: {e}")
 
 @print_wait
 def remove_product():
-    myinventory.display_all_products()
+    
     print("-" * 40)
     try:
         product_id = read_int("Enter product ID to remove: ")
@@ -118,8 +127,6 @@ my_function = {
 
 @print_wait
 def main():
-    global myinventory
-    myinventory = Inventory("inventory_data.json")
     while True:
         os.system("cls" if os.name == "nt" else "clear")
         menu()
