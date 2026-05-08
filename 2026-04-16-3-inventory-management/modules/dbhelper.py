@@ -20,14 +20,18 @@ class DBHelper:
     def execute_query(self, query, params=None):
         try:
             self.cursor.execute(query, params)
-            result = self.cursor.fetchall()
-            return result if result != [] else "No results found."
-        
-        except psycopg2.Error as err:
+            # Only fetch if it's a SELECT statement
+            if query.strip().upper().startswith("SELECT"):
+                result = self.cursor.fetchall()
+                return result if result else "No results found."
+            
+            # For INSERT/UPDATE/DELETE, return success message
+            return "Query executed successfully."
+            
+        except Error as err:
             self.rollback()
             print(f"Error: {err}")
             return None
-
     def commit(self):
         self.connection.commit()
     

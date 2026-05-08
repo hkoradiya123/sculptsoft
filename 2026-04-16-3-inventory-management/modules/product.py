@@ -11,7 +11,8 @@ dotenv.load_dotenv()
 
 
 class Product:
-    def __init__(self, name, price):
+    def __init__(self, name, price, id=None):
+        self.id = id
         self.name = name
         self.price = price
 
@@ -28,35 +29,32 @@ class Product:
         except Error as e:
             print(f"Error occurred while adding product: {e}")
 
-    def update_product_name(self, product_id, name=None):
+    def update_product(self, product_id: int, name=None , price=None):
+        if name is None and price is None:
+            print("No updates provided.")
+            return
+        if price is not None and price < 0:
+            print("Price cannot be negative.")
+            return
+        if name is not None and name.strip() == "":
+            print("Product name cannot be empty.")
+            return
         try:
-
             if name is not None:
-                db.execute_query("UPDATE product SET name = %s WHERE id = %s",
+                db.execute_query("UPDATE product SET name = %s WHERE product_id = %s",
                                 (name, product_id))
-                print(f"Product with ID {product_id} has been updated.")
+            if price is not None:
+                db.execute_query("UPDATE product SET price = %s WHERE product_id = %s",
+                                (price, product_id))
+            db.commit()
+            print(f"Product with ID {product_id} has been updated.")
         except Error as e:
+            db.rollback()
             print(f"Error occurred while updating product: {e}")
 
-    def update_product_price(self, product_id, new_price):
-        if new_price < 0:
-            print("Price cannot be negative.")
-        else:
-            try:
-                db.execute_query("""
-                    UPDATE product 
-                    SET price = %s 
-                    WHERE product_id = %s
-                """, (new_price, product_id))
-                db.commit()
 
-            except Error as e:
-                db.rollback()
-                print(f"Error occurred while updating price: {e}")
-
-
-    def display_details(id):
-        result = db.execute_query("SELECT * FROM product WHERE product_id = %s", (id,))
+    def display_details(self, id):
+        result = db.execute_query("SELECT * FROM product WHERE product_id = %s", (id))
         if result != "No results found.":
             product = result[0]
             print(
@@ -64,6 +62,10 @@ class Product:
             )
         else:
             print("Product not found.")
+            
+    def check_product_exists(product_id):
+        result = db.execute_query("SELECT product_id FROM product WHERE product_id = %s", (product_id,))
+        return True if result and result != "No results found." else False
     
     def get_products(self):
         try:
@@ -74,3 +76,15 @@ class Product:
             db.rollback()
             print(f"Error: {err}")
             return None
+        
+    def  remove_product(product_id):
+        try:
+            if not Product.check_product_exists(product_id):
+                print(f"Product with ID {product_id} does not exist.")
+                return
+            db.execute_query("DELETE FROM product WHERE product_id = %s", (product_id,))
+            db.commit()
+            print(f"Product with ID {product_id} has been removed.")
+        except Error as e:
+            db.rollback()
+            print(f"Error occurred while removing product: {e}")
