@@ -16,20 +16,24 @@ class Product:
         self.name = name
         self.price = price
 
-    def new_product(self, name, price):
+    @staticmethod
+    def new_product(name, price):
         try:
             if price <= 0:
                 raise InvalidPriceError(price)
-            db.execute_query("""INSERT INTO product 
+            product_id = db.execute_query("""INSERT INTO product 
                              (name, price) 
                              VALUES (%s, %s)
+                             returning product_id
                              """,(name, price))
             db.commit()
             print(f"Product '{name}' has been added with price {price}.")
+            return product_id[0][0] if product_id else None
         except Error as e:
             print(f"Error occurred while adding product: {e}")
 
-    def update_product(self, product_id: int, name=None , price=None):
+    @staticmethod
+    def update_product(product_id: int, name=None , price=None):
         if name is None and price is None:
             print("No updates provided.")
             return
@@ -62,14 +66,16 @@ class Product:
             )
         else:
             print("Product not found.")
-            
+           
+    @staticmethod       
     def check_product_exists(product_id):
         result = db.execute_query("SELECT product_id FROM product WHERE product_id = %s", (product_id,))
         return True if result and result != "No results found." else False
     
-    def get_products(self):
+    @staticmethod
+    def get_products():
         try:
-            db.execute("SELECT * FROM product")
+            db.execute("SELECT product_id, name, price FROM product")
             result = db.fetchall()
             return result if result != [] else "No products found."
         except psycopg2.Error as err:
@@ -77,7 +83,8 @@ class Product:
             print(f"Error: {err}")
             return None
         
-    def  remove_product(product_id):
+    @staticmethod
+    def remove_product(product_id):
         try:
             if not Product.check_product_exists(product_id):
                 print(f"Product with ID {product_id} does not exist.")
@@ -88,3 +95,31 @@ class Product:
         except Error as e:
             db.rollback()
             print(f"Error occurred while removing product: {e}")
+            
+    @staticmethod
+    def search_product(name):
+        result = db.execute_query("SELECT product_id, name, price FROM product WHERE name ILIKE %s", (f"%{name}%",))
+        if result != "No results found.":
+            return result
+           
+    @staticmethod 
+    def search_product_by_id(product_id):
+        result = db.execute_query("SELECT * FROM product WHERE product_id = %s", (product_id,))
+        if result != "No results found.":
+            return result[0]
+        
+    @staticmethod
+    def get_all_product_ids():
+        result = db.execute_query("SELECT product_id FROM product")
+        if result != "No results found.":
+            return [row[0] for row in result]
+    
+    @staticmethod
+    def display_all_products():
+        result = db.execute_query("SELECT product_id, name, price FROM product")
+        if result != "No results found.":
+            print("Products:")
+            for row in result:
+                print(f"ID: {row[0]}, Name: {row[1]}, Price: {row[2]}")
+        else:
+            print("No products found.")

@@ -1,4 +1,5 @@
 from modules.inventory import Inventory
+from modules.inventory import Location
 from modules.product import Product
 from modules.exceptions import (
     InventoryError,
@@ -9,4 +10,4 @@ from modules.exceptions import (
     InsufficientStockError,
 )
 
-__all__ = ["Inventory", "Product", "InventoryError", "ProductNotFoundError", "DuplicateProductError", "InvalidQuantityError", "InvalidPriceError", "InsufficientStockError"]
+__all__ = ["Inventory", "Product", "InventoryError", "ProductNotFoundError", "DuplicateProductError", "InvalidQuantityError", "InvalidPriceError", "InsufficientStockError", "Location"]

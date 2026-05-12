@@ -19,12 +19,14 @@ class DBHelper:
         self.cursor = self.connection.cursor()
     def execute_query(self, query, params=None):
         try:
-            self.cursor.execute(query, params)
             # Only fetch if it's a SELECT statement
             if query.strip().upper().startswith("SELECT"):
+                self.cursor.execute(query, params)
                 result = self.cursor.fetchall()
                 return result if result else "No results found."
-            
+            else:
+                self.cursor.execute(query, params)
+                self.connection.commit()
             # For INSERT/UPDATE/DELETE, return success message
             return "Query executed successfully."
             

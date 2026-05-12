@@ -20,7 +20,11 @@ CREATE TABLE price_history (
 );
 
 CREATE TABLE location (
-    location_i- 2. Create Tables (Your Schema)
+    location_id SERIAL PRIMARY KEY,
+    inventory_id INT NOT NULL,
+    address VARCHAR(150),
+    FOREIGN KEY (inventory_id) REFERENCES inventory(inventory_id) ON DELETE CASCADE
+);
 CREATE TABLE inventory (
     inventory_id SERIAL PRIMARY KEY,
     name VARCHAR(100),

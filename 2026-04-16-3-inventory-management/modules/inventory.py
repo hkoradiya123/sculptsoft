@@ -103,7 +103,7 @@ class Inventory():
         try:
             results = db.execute_query(
                 """
-                SELECT address_id, address FROM location WHERE inventory_id = %s
+                SELECT location_id, address FROM location WHERE inventory_id = %s
                 """,
                 (self.id,)
             )
@@ -138,23 +138,26 @@ class Inventory():
     #     UNIQUE (product_id, inventory_id, location_id)
     # );
 
-    def add_product(self, product , quantity,location):
-        if product.price <= 0:
-            raise InvalidPriceError(product.price)
-        if product.quantity < 0:
+    def add_product(self, product_id , quantity,location_id):
+        if quantity < 0:
             raise InvalidQuantityError(product.quantity)
-
+        if location_id not in [loc[0] for loc in self.get_all_locations()]:
+            print("Invalid location ID.")
+            return
+        if product_id not in Product.get_all_product_ids():
+            print("Product not found in product database. Please create it first.")
+            return
         try:
             db.execute_query(
                 """
                 INSERT INTO stock (product_id, quantity, inventory_id, location_id) VALUES (%s, %s, %s, %s)
                 """,
-                (product.id, quantity, self.id, location.id)
+                (product_id, quantity, self.id, location_id)
             )
         except Error as e:
             print(f"Error occurred while adding product: {e}")
 
-        print(f"{product.name} is added to the inventory")
+        print(f"Product added to the inventory")
         
     def update_quantity(self, product_id, quantity):
         if quantity < 0:
@@ -279,7 +282,37 @@ class Inventory():
             db.rollback()
             print(f"Error: {err}")
             return None
+    def update_product(self, product_id=None, name=None, price=None , quantity=None):
+        if not Product.check_product_exists(product_id):
+            print(f"Product with ID {product_id} does not exist.")
+            return
+        try:
+            if product_id not in self.get_all_product_ids():
+                print(f"Product with ID {product_id} is not in the inventory. Please add it first.")
+                return
+            if quantity is not None:
+                db.execute_query(
+                    """
+                    UPDATE stock SET quantity = %s WHERE product_id = %s AND inventory_id = %s
+                    """,
+                    (quantity, product_id, self.id)
+                )
+            Product.update_product(product_id=product_id, name=name, price=price)
+        except Exception as e:
+            print(f"Error occurred while updating product: {e}")
             
+    def get_all_product_ids(self):
+        try:
+            results = db.execute_query(
+                """
+                SELECT product_id FROM stock WHERE inventory_id = %s
+                """,
+                (self.id,)
+            )
+            return [row[0] for row in results] if results != "No results found." else []
+        except Exception as e:
+            print(f"Error occurred while fetching product IDs: {e}")
+            return []       
 
     # # * Save/load data
     # def save_data(self):
@@ -318,3 +351,21 @@ class Inventory():
     #             max_id = product.id
     #     if max_id >= Product.id_counter:
     #         Product.id_counter = max_id + 1
+
+class Location:
+    def __init__(self, id, address):
+        self.id = id
+        self.address = address
+        
+    @staticmethod
+    def create_location(inventory_id, address):
+        try:
+            db.execute_query(
+                """
+                INSERT INTO location (inventory_id, address) 
+                VALUES (%s, %s)
+                """,
+                (inventory_id, address))               
+            print(f"Location '{address}' has been created.")
+        except Error as e:
+            print(f"Error occurred while creating location: {e}")
