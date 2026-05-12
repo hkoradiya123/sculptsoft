@@ -1,13 +1,7 @@
 import mysql.connector
 from mysql.connector import Error
-from dbhelper import DBHelper
-from exceptions import (
-    DuplicateProductError,
-    InvalidPriceError,
-    InvalidQuantityError,
-    ProductNotFoundError,
-    InsufficientStockError
-)
+from modules.dbhelper import DBHelper,db
+from modules.exceptions import *
 # import dotenv
 import os
 import dotenv
@@ -15,59 +9,117 @@ from datetime import datetime
 
 dotenv.load_dotenv()
 
-try:
-    db = DBHelper()
-    print("Database connection successful.")
-except Error as e:
-    print(f"Error occurred while connecting to the database: {e}")
 
 class Product:
-    def __init__(self, name, price):
+    def __init__(self, name, price, id=None):
+        self.id = id
         self.name = name
         self.price = price
 
-    def new_product(self, name, price, quantity):
+    @staticmethod
+    def new_product(name, price):
         try:
             if price <= 0:
                 raise InvalidPriceError(price)
-            if quantity < 0:
-                raise InvalidQuantityError(quantity)
-            db.execute_query("""INSERT INTO product 
+            product_id = db.execute_query("""INSERT INTO product 
                              (name, price) 
                              VALUES (%s, %s)
+                             returning product_id
                              """,(name, price))
-            
-            db.execute_query("""
-                             insert into price_history 
-                             (product_id, price) 
-                             values (LAST_INSERT_ID(), %s)
-                             """, (price))
+            db.commit()
+            print(f"Product '{name}' has been added with price {price}.")
+            return product_id[0][0] if product_id else None
         except Error as e:
             print(f"Error occurred while adding product: {e}")
 
-    def update_price(self, new_price):
-        if new_price < 0:
+    @staticmethod
+    def update_product(product_id: int, name=None , price=None):
+        if name is None and price is None:
+            print("No updates provided.")
+            return
+        if price is not None and price < 0:
             print("Price cannot be negative.")
-        else:
-            try:
-                db.execute_query("""
-                    UPDATE product 
-                    SET price = %s 
-                    WHERE product_id = %s
-                """, (new_price, self.id))
-                db.commit()
+            return
+        if name is not None and name.strip() == "":
+            print("Product name cannot be empty.")
+            return
+        try:
+            if name is not None:
+                db.execute_query("UPDATE product SET name = %s WHERE product_id = %s",
+                                (name, product_id))
+            if price is not None:
+                db.execute_query("UPDATE product SET price = %s WHERE product_id = %s",
+                                (price, product_id))
+            db.commit()
+            print(f"Product with ID {product_id} has been updated.")
+        except Error as e:
+            db.rollback()
+            print(f"Error occurred while updating product: {e}")
 
-            except Error as e:
-                db.rollback()
-                print(f"Error occurred while updating price: {e}")
 
-
-    def display_details(id):
-        result = db.execute_query("SELECT * FROM product WHERE product_id = %s", (id,))
+    def display_details(self, id):
+        result = db.execute_query("SELECT * FROM product WHERE product_id = %s", (id))
         if result != "No results found.":
             product = result[0]
             print(
-                f"ID: {product[0]}, Name: {product[1]}, Price: {product[2]}, Quantity: {product[3]}"
+                f"ID: {product[0]}, Name: {product[1]}, Price: {product[2]}"
             )
         else:
             print("Product not found.")
+           
+    @staticmethod       
+    def check_product_exists(product_id):
+        result = db.execute_query("SELECT product_id FROM product WHERE product_id = %s", (product_id,))
+        return True if result and result != "No results found." else False
+    
+    @staticmethod
+    def get_products():
+        try:
+            db.execute("SELECT product_id, name, price FROM product")
+            result = db.fetchall()
+            return result if result != [] else "No products found."
+        except psycopg2.Error as err:
+            db.rollback()
+            print(f"Error: {err}")
+            return None
+        
+    @staticmethod
+    def remove_product(product_id):
+        try:
+            if not Product.check_product_exists(product_id):
+                print(f"Product with ID {product_id} does not exist.")
+                return
+            db.execute_query("DELETE FROM product WHERE product_id = %s", (product_id,))
+            db.commit()
+            print(f"Product with ID {product_id} has been removed.")
+        except Error as e:
+            db.rollback()
+            print(f"Error occurred while removing product: {e}")
+            
+    @staticmethod
+    def search_product(name):
+        result = db.execute_query("SELECT product_id, name, price FROM product WHERE name ILIKE %s", (f"%{name}%",))
+        if result != "No results found.":
+            return result
+           
+    @staticmethod 
+    def search_product_by_id(product_id):
+        result = db.execute_query("SELECT * FROM product WHERE product_id = %s", (product_id,))
+        if result != "No results found.":
+            return result[0]
+        
+    @staticmethod
+    def get_all_product_ids():
+        result = db.execute_query("SELECT product_id FROM product")
+        if result != "No results found.":
+            return [row[0] for row in result]
+    
+    @staticmethod
+    def display_all_products():
+        result = db.execute_query("SELECT product_id, name, price FROM product")
+        if result != "No results found.":
+            print("Products:")
+            for row in result:
+                print(f"ID: {row[0]}, Name: {row[1]}, Price: {row[2]}")
+        else:
+            print("No products found.")

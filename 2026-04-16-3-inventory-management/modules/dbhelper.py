@@ -1,13 +1,16 @@
-import mysql.connector
-from mysql.connector import Error
+import psycopg2
+from psycopg2 import Error
 import os
 import dotenv
 
 dotenv.load_dotenv()
 
+
+
+
 class DBHelper:
     def __init__(self):
-        self.connection = mysql.connector.connect(
+        self.connection = psycopg2.connect(
             host=os.getenv("host"),
             user=os.getenv("user"),
             password=os.getenv("password"),
@@ -16,15 +19,21 @@ class DBHelper:
         self.cursor = self.connection.cursor()
     def execute_query(self, query, params=None):
         try:
-            self.cursor.execute(query, params)
-            result = self.cursor.fetchall()
-            return result if result != [] else "No results found."
-        
-        except mysql.connector.Error as err:
+            # Only fetch if it's a SELECT statement
+            if query.strip().upper().startswith("SELECT"):
+                self.cursor.execute(query, params)
+                result = self.cursor.fetchall()
+                return result if result else "No results found."
+            else:
+                self.cursor.execute(query, params)
+                self.connection.commit()
+            # For INSERT/UPDATE/DELETE, return success message
+            return "Query executed successfully."
+            
+        except Error as err:
             self.rollback()
             print(f"Error: {err}")
             return None
-
     def commit(self):
         self.connection.commit()
     
@@ -35,25 +44,8 @@ class DBHelper:
         self.cursor.close()
         self.connection.close()
         
-    def get_inventory_value(self):
-        try:
-            self.cursor.execute("SELECT SUM(price * quantity) FROM inventory")
-            result = self.cursor.fetchone()
-            return result[0] if result[0] is not None else 0
-        except mysql.connector.Error as err:
-            self.rollback()
-            print(f"Error: {err}")
-            return None
-        
-    def get_products(self):
-        try:
-            self.cursor.execute("SELECT * FROM product")
-            result = self.cursor.fetchall()
-            return result if result != [] else "No products found."
-        except mysql.connector.Error as err:
-            self.rollback()
-            print(f"Error: {err}")
-            return None
+db = DBHelper()
+
         
 
         

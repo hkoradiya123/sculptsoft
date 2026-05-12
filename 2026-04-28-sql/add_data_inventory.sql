@@ -1,4 +1,4 @@
-use inventory_management;
+
 
 INSERT INTO inventory (name, area, city) VALUES
 ('Main Warehouse', 'Andheri', 'Mumbai'),
