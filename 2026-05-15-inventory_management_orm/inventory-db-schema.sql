@@ -1,23 +1,23 @@
-CREATE TABLE inventory (
-    inventory_id SERIAL PRIMARY KEY,
-    name VARCHAR(100),
-    area VARCHAR(100),
-    city VARCHAR(100)
-);
+-- CREATE TABLE inventory (
+--     inventory_id SERIAL PRIMARY KEY,
+--     name VARCHAR(100),
+--     area VARCHAR(100),
+--     city VARCHAR(100)
+-- );
 
-CREATE TABLE product (
-    product_id SERIAL PRIMARY KEY,
-    name VARCHAR(100),
-    price DECIMAL(10,2)
-);
+-- CREATE TABLE product (
+--     product_id SERIAL PRIMARY KEY,
+--     name VARCHAR(100),
+--     price DECIMAL(10,2)
+-- );
 
-CREATE TABLE price_history (
-    id SERIAL PRIMARY KEY,
-    product_id INT,
-    price DECIMAL(10,2),
-    changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (product_id) REFERENCES product(product_id)
-);
+-- CREATE TABLE price_history (
+--     id SERIAL PRIMARY KEY,
+--     product_id INT,
+--     price DECIMAL(10,2),
+--     changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--     FOREIGN KEY (product_id) REFERENCES product(product_id)
+-- );
 
 CREATE TABLE location (
     location_id SERIAL PRIMARY KEY,

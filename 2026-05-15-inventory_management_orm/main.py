@@ -1,7 +1,8 @@
 from modules import *
 import os
 import dotenv
-from modules.dbhelper import db
+from database.dbhelper import db
+from database import model
 
 current_inventory = None
 inventories = []
@@ -74,15 +75,7 @@ def change_inventory():
 
 def load_inventories():
     global inventories
-    # Load all inventories from DB
-    results = db.execute_query("SELECT inventory_id, name, area, city FROM inventory")
-    if results and results != "No results found.":
-        inventories = [
-            {'id': row[0], 'name': row[1], 'area': row[2], 'city': row[3]}
-            for row in results
-        ]
-    else:
-        inventories = []
+    inventories = Inventory.get_all_inventories()
 
 @print_wait
 def create_inventory():
@@ -91,7 +84,6 @@ def create_inventory():
     city = read_non_empty_string("Enter city: ")
     inv = Inventory.create_inventory(name, area, city)
     global inventories
-    id = db.execute_query("")
     inventories.append({'id': inv.id, 'name': name, 'area': area, 'city': city})
     print(f"Created inventory: {name}")
 
@@ -122,14 +114,7 @@ def add_product():
     if product_id not in Product.get_all_product_ids():
         print("Product not found in product database. Please create it first.")
         return
-    # Check if product is already in inventory stock
-    stock = db.execute_query(
-        """
-        SELECT quantity FROM stock WHERE product_id = %s AND inventory_id = %s
-        """,
-        (product_id, current_inventory.id)
-    )
-    if stock and stock != "No results found.":
+    if product_id in current_inventory.get_all_product_ids():
         print("Product already exists in this inventory. Use update to change quantity.")
         return
     quantity = read_int("Enter product quantity: ")
@@ -162,7 +147,7 @@ def create_add_product():
     if not locations:
         print("No locations found for this inventory. Please create one.\n")
         print("wold you like to create a location now? (y/n): ", end="")
-        choice = read_non_empty_string().strip().lower()
+        choice = read_non_empty_string("").strip().lower()
         if choice == 'y':
             add_address()
         return
@@ -191,7 +176,7 @@ def remove_product():
     try:
         current_inventory.display_all_products()
         product_id = read_int("Enter product ID to remove: ")
-        Product.remove_product(product_id)
+        current_inventory.remove_product(product_id)
     except ValueError as e:
         print(f"Error removing product: {e}")   
 
@@ -207,7 +192,8 @@ def update_product():
         # Use a temporary variable for price to distinguish between 0 and an error
         raw_price = read_float("Enter new price (enter 0 to keep unchanged): ")
         price = raw_price if raw_price != 0 else None
-        quantity = read_float("Enter new quantity (enter 0 to keep unchanged): ") or None
+        raw_quantity = read_int("Enter new quantity (enter 0 to keep unchanged): ")
+        quantity = raw_quantity if raw_quantity != 0 else None
         
 
         current_inventory.update_product(product_id=product_id, name=name, price=price, quantity=quantity)
@@ -308,11 +294,9 @@ def main():
                 break
             else:
                 print("Invalid choice. Please try again.")
-        elif choice == len(menu_options) + 1:
-            print("Exiting...")
-            break
         else:
             print("Invalid input. Please enter a number corresponding to the menu options.")
 
 if __name__ == "__main__":
+    db.create_tables()
     main()
