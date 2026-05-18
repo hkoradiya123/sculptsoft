@@ -256,7 +256,7 @@ class Inventory:
     def get_inventory_value(self):
         return self.total_value()
 
-    def update_product(self, product_id=None, name=None, price=None, quantity=None):
+    def update_product(self, product_id: int, name=None, price=None, quantity=None):
         if not Product.check_product_exists(product_id):
             print(f"Product with ID {product_id} does not exist.")
             return

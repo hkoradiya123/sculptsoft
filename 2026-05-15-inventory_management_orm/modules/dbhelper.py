@@ -51,5 +51,5 @@ db = DBHelper()
         
 if __name__ == "__main__":
     db_helper = DBHelper()
-    result = db_helper.get_products()
-    print(result)
+    # result = db_helper.get_products()
+    # print(result)
