@@ -43,7 +43,7 @@ class DBHelper:
     def close(self):
         self.cursor.close()
         self.connection.close()
-        
+        0
 db = DBHelper()
 
         
