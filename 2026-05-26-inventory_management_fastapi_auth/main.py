@@ -1,6 +1,7 @@
 from typing import List
 
 from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -20,7 +21,7 @@ from api.schemas import (
     StockRead,
     StockUpdate,
 )
-from api.schemas.auth import LoginRequest, RegisterRequest
+from api.schemas.auth import RegisterRequest
 from core.security import create_access_token, hash_password, verify_password
 from database.model.inventory import Inventory as InventoryModel
 from database.model.inventory import Location as LocationModel
@@ -32,12 +33,15 @@ app = FastAPI(title="Inventory Management API", version="1.0.0")
 
 
 @app.post("/login", tags=["auth"])
-def login(payload: LoginRequest, session: Session = Depends(get_db)):
-    user = session.query(User).filter(User.email == payload.email).first()
+def login(
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    session: Session = Depends(get_db),
+):
+    user = session.query(User).filter(User.email == form_data.username).first()
     if not user:
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
-    if not verify_password(payload.password, user.hashed_password):
+    if not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
     token = create_access_token({"sub": str(user.id), "role": user.role})
