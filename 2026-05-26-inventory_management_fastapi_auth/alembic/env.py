@@ -4,8 +4,8 @@ from alembic import context
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
-from database.dbhelper import Base, get_database_url
-import database.model  # Register models so metadata is populated
+from app.database.dbhelper import Base, get_database_url
+import app.models  # Register models so metadata is populated
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -79,3 +79,4 @@ if context.is_offline_mode():
     run_migrations_offline()
 else:
     run_migrations_online()
+

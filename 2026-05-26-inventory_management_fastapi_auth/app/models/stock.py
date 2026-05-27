@@ -1,6 +1,6 @@
 from sqlalchemy import ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from database.dbhelper import Base
+from app.database.dbhelper import Base
 
 class Stock(Base):
     __tablename__ = "stock"
@@ -20,3 +20,4 @@ class Stock(Base):
     __table_args__ = (
         UniqueConstraint("product_id", "inventory_id", "location_id", name="uq_stock_product_inventory_location"),
     )
+

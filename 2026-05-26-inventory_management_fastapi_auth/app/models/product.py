@@ -4,7 +4,7 @@ from typing import List
 
 from sqlalchemy import String, Numeric, ForeignKey, DateTime, func, DDL, event
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from database.dbhelper import Base
+from app.database.dbhelper import Base
 
 class Product(Base):
     __tablename__ = "product"
@@ -62,3 +62,4 @@ $$;
 # Bind DDL components to the Product metadata lifecycle
 event.listen(Product.__table__, 'after_create', trigger_function_ddl.execute_if(dialect='postgresql'))
 event.listen(Product.__table__, 'after_create', trigger_binding_ddl.execute_if(dialect='postgresql'))
+

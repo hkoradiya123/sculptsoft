@@ -23,3 +23,4 @@ class ProductRead(ProductBase):
 
     class Config:
         orm_mode = True
+

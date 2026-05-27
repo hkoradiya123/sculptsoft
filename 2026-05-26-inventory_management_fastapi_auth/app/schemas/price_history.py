@@ -13,3 +13,4 @@ class PriceHistoryRead(BaseModel):
 
     class Config:
         orm_mode = True
+

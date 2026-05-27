@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String
 
-from database.dbhelper import Base
+from app.database.dbhelper import Base
 
 
 class User(Base):
@@ -10,3 +10,4 @@ class User(Base):
     email = Column(String, unique=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     role = Column(String, default="user")
+

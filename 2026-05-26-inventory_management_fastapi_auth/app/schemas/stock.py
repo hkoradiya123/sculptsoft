@@ -23,3 +23,4 @@ class StockRead(BaseModel):
 
     class Config:
         orm_mode = True
+

@@ -24,3 +24,4 @@ class InventoryRead(InventoryBase):
 
     class Config:
         orm_mode = True
+

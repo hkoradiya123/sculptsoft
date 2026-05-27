@@ -1,7 +1,7 @@
 from sqlalchemy import String, ForeignKey
 from typing import List
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from database.dbhelper import Base
+from app.database.dbhelper import Base
 
 class Inventory(Base):
     __tablename__ = "inventory"
@@ -26,3 +26,4 @@ class Location(Base):
     # Relationships
     inventory: Mapped["Inventory"] = relationship(back_populates="locations")
     stocks: Mapped[List["Stock"]] = relationship(back_populates="location")
+

@@ -21,3 +21,4 @@ class LocationRead(LocationBase):
 
     class Config:
         orm_mode = True
+
