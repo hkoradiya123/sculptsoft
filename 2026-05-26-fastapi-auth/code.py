@@ -20,7 +20,7 @@ FAKE_USER = {
 def verify_token(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        return payload
+        return payloadx
 
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
@@ -38,6 +38,8 @@ def login(form_data: OAuth2PasswordRequestForm = Depends()):
     payload = {"sub": form_data.username, "exp": expire}
     token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
     return {"access_token": token, "token_type": "bearer"}
+
+
 
 
 @app.get("/dashboard")
