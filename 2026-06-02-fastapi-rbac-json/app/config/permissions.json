@@ -1,0 +1,31 @@
+{
+    "routes": {
+        "/api/v1/users": {
+            "GET": [
+                "admin",
+                "manager",
+                "employee"
+            ],
+            "POST": [
+                "admin",
+                "manager"
+            ]
+        },
+        "/api/v1/all-users": {
+            "GET": [
+                "admin",
+                "manager",
+                "employee"
+            ]
+        },
+        "/api/v1/users/{id}": {
+            "PUT": [
+                "admin",
+                "manager"
+            ],
+            "DELETE": [
+                "admin"
+            ]
+        }
+    }
+}
