@@ -7,7 +7,6 @@ import os
 
 app = FastAPI()
 
-# Config
 
 SECRET_KEY = "my_super_secret_key_change_this"
 ALGORITHM = "HS256"
@@ -15,7 +14,6 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
-# Users
 
 DEFAULT_USERS = [
     {"username": "admin", "password": "admin123", "role": "admin"},
@@ -35,8 +33,6 @@ for user in users:
     user.setdefault("role", "user")
 
 print("Loaded users:", users)
-
-# Token Verification
 
 def verify_token(token: str = Depends(oauth2_scheme)):
     try:
@@ -78,9 +74,6 @@ def require_roles(*allowed_roles: str):
 
     return role_checker
 
-# -------------------------
-# Login
-# -------------------------
 
 @app.post("/login")
 def login(form_data: OAuth2PasswordRequestForm = Depends()):
@@ -121,7 +114,6 @@ def login(form_data: OAuth2PasswordRequestForm = Depends()):
         "token_type": "bearer"
     }
 
-# Protected Route
 
 @app.get("/dashboard")
 def dashboard(user=Depends(verify_token)):
@@ -137,7 +129,6 @@ def admin_panel(user=Depends(require_roles("admin"))):
         "message": f"Welcome admin {user['sub']}"
     }
 
-# Public Route
 
 @app.get("/")
 def home():
