@@ -2,6 +2,8 @@
     "roles":[
         "admin",
         "manager",
-        "employee"
+        "viewer",
+        "editor",
+        "auditor"
     ]
 }

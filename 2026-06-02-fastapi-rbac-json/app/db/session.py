@@ -25,8 +25,10 @@ def get_db() -> Generator[Session, None, None]:
 
 
 def seed_default_users() -> None:
-    """Seed a minimal user set for demo auth if missing."""
+    """Reset demo users and seed a minimal user set for auth."""
     Base.metadata.create_all(bind=engine)
+
+    from app.auth.jwt_auth import hash_password
 
     defaults = [
         ("admin", "admin", "admin123"),
@@ -44,8 +46,7 @@ def seed_default_users() -> None:
     ]
 
     with SessionLocal() as db:
+        db.query(User).delete(synchronize_session=False)
         for username, role, password in defaults:
-            exists = db.query(User).filter(User.username == username).first()
-            if exists is None:
-                db.add(User(username=username, password=password, role=role))
+            db.add(User(username=username, password=hash_password(password), role=role))
         db.commit()

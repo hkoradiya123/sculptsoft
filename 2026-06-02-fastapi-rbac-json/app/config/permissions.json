@@ -1,31 +1,100 @@
 {
     "routes": {
-        "/api/v1/users": {
-            "GET": [
-                "admin",
-                "manager",
-                "employee"
-            ],
-            "POST": [
-                "admin",
-                "manager"
-            ]
-        },
-        "/api/v1/all-users": {
-            "GET": [
-                "admin",
-                "manager",
-                "employee"
-            ]
-        },
-        "/api/v1/users/{id}": {
-            "PUT": [
-                "admin",
-                "manager"
-            ],
-            "DELETE": [
-                "admin"
-            ]
-        }
+      "/inventories": {
+        "GET": [
+          "admin",
+          "manager",
+          "viewer"
+        ],
+        "POST": [
+          "admin"
+        ]
+      },
+  
+      "/inventories/{inventory_id}": {
+        "GET": [
+          "admin",
+          "manager",
+          "viewer"
+        ],
+        "PATCH": [
+          "admin",
+          "manager"
+        ],
+        "DELETE": [
+          "admin"
+        ]
+      },
+  
+      "/inventories/{inventory_id}/locations": {
+        "GET": [
+          "admin",
+          "manager",
+          "viewer"
+        ],
+        "POST": [
+          "admin",
+          "manager"
+        ]
+      },
+  
+      "/inventories/{inventory_id}/locations/{location_id}": {
+        "PATCH": [
+          "admin",
+          "manager"
+        ],
+        "DELETE": [
+          "admin"
+        ]
+      },
+  
+      "/inventories/{inventory_id}/stock": {
+        "GET": [
+          "admin",
+          "manager",
+          "viewer"
+        ],
+        "POST": [
+          "admin",
+          "manager"
+        ]
+      },
+  
+      "/inventories/{inventory_id}/stock/{stock_id}": {
+        "PATCH": [
+          "admin",
+          "manager"
+        ],
+        "DELETE": [
+          "admin"
+        ]
+      },
+  
+      "/products": {
+        "GET": [
+          "admin",
+          "manager",
+          "viewer"
+        ],
+        "POST": [
+          "admin",
+          "manager"
+        ]
+      },
+  
+      "/products/{product_id}": {
+        "GET": [
+          "admin",
+          "manager",
+          "viewer"
+        ],
+        "PATCH": [
+          "admin",
+          "manager"
+        ],
+        "DELETE": [
+          "admin"
+        ]
+      }
     }
-}
+  }
