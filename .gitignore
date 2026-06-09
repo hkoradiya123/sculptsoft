@@ -1,20 +1,67 @@
+# ── Python ────────────────────────────────────────────────────────────────────
 /tempCodeRunnerFile.py
 *.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.egg-info/
+dist/
+build/
+
+# ── Virtual environments ──────────────────────────────────────────────────────
 .venv/
 .venv/*
 /.venv/*
 /.venv/
+venv/
+env/
+
+# ── Environment & secrets ─────────────────────────────────────────────────────
+.env
+.env.*
+*.env
 2026-03-19-fastapi-basics\SSC - Copy\frontend\.env
 2026-03-19-fastapi-basics\SSC - Copy\backend\.env
 2026-03-19-fastapi-basics\SSC\frontend\.env
 2026-03-19-2-ssc-project\backend\.env
-
 2026-03-19-fastapi-basics/SSC/backend/firebase-service-account.json
 2026-03-19-fastapi-basics/SSC/backend/.env
-.env
+*.pem
+*.key
+
+# ── Celery ────────────────────────────────────────────────────────────────────
+celerybeat-schedule
+celerybeat-schedule.db
+celerybeat.pid
+
+# ── Redis dump ────────────────────────────────────────────────────────────────
+dump.rdb
+
+# ── Docker ────────────────────────────────────────────────────────────────────
+.dockerignore
+
+# ── IDEs ──────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.suo
+*.user
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Databases ─────────────────────────────────────────────────────────────────
+*.db
+*.sqlite3
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+*.log
+logs/
+
+# ── Project-specific ignores ──────────────────────────────────────────────────
+auto_commit.ps1
 2026-04-16-practice/SSC
 finance-system
 2026-04-16-3-inventory-management/
-auto_commit.ps1
 2026-05-20-snake-game
 12345
