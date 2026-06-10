@@ -1,33 +1,36 @@
 # ── Python ────────────────────────────────────────────────────────────────────
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
 /tempCodeRunnerFile.py
-*.pyc
-*.pyo
-*.pyd
-__pycache__/
 *.egg-info/
 dist/
 build/
 
 # ── Virtual environments ──────────────────────────────────────────────────────
 .venv/
-.venv/*
-/.venv/*
-/.venv/
 venv/
 env/
+**/env/
+**/venv/
+**/.venv/
 
 # ── Environment & secrets ─────────────────────────────────────────────────────
 .env
 .env.*
 *.env
-2026-03-19-fastapi-basics\SSC - Copy\frontend\.env
-2026-03-19-fastapi-basics\SSC - Copy\backend\.env
-2026-03-19-fastapi-basics\SSC\frontend\.env
-2026-03-19-2-ssc-project\backend\.env
-2026-03-19-fastapi-basics/SSC/backend/firebase-service-account.json
-2026-03-19-fastapi-basics/SSC/backend/.env
+**/.env
+**/.env.*
+**/firebase-service-account.json
 *.pem
 *.key
+
+# ── AI Tools & Metadata ───────────────────────────────────────────────────────
+.gemini/
+**/.gemini/
+.cclaude/
+**/.cclaude/
 
 # ── Celery ────────────────────────────────────────────────────────────────────
 celerybeat-schedule
@@ -42,7 +45,9 @@ dump.rdb
 
 # ── IDEs ──────────────────────────────────────────────────────────────────────
 .vscode/
+**/.vscode/
 .idea/
+**/.idea/
 *.suo
 *.user
 
@@ -57,10 +62,10 @@ Thumbs.db
 # ── Logs ──────────────────────────────────────────────────────────────────────
 *.log
 logs/
+**/logs/
 
 # ── Project-specific ignores ──────────────────────────────────────────────────
 auto_commit.ps1
-2026-04-16-practice/SSC
 finance-system
 2026-04-16-3-inventory-management/
 2026-05-20-snake-game
