@@ -1,0 +1,73 @@
+{
+  "routes": {
+    "/inventories/{inventory_id}/generate-report": {
+      "POST": ["admin", "manager"]
+    },
+
+    "/tasks/{task_id}": {
+      "GET": ["admin", "manager", "viewer", "editor", "auditor"]
+    },
+
+    "/inventories": {
+      "GET": ["admin", "manager", "viewer", "editor", "auditor"],
+      "POST": ["admin"]
+    },
+
+    "/inventories/{inventory_id}": {
+      "GET": ["admin", "manager", "viewer", "editor", "auditor"],
+      "PATCH": ["admin", "manager"],
+      "DELETE": ["admin"]
+    },
+
+    "/inventories/{inventory_id}/locations": {
+      "GET": ["admin", "manager", "viewer", "editor", "auditor"],
+      "POST": ["admin", "manager"]
+    },
+
+    "/inventories/{inventory_id}/locations/{location_id}": {
+      "PATCH": ["admin", "manager"],
+      "DELETE": ["admin"]
+    },
+
+    "/inventories/{inventory_id}/stock": {
+      "GET": ["admin", "manager", "viewer", "editor", "auditor"],
+      "POST": ["admin", "manager"]
+    },
+
+    "/inventories/{inventory_id}/stock/{stock_id}": {
+      "PATCH": ["admin", "manager"],
+      "DELETE": ["admin"]
+    },
+
+    "/products/bulk-import": {
+      "POST": ["admin", "manager"]
+    },
+
+    "/products": {
+      "GET": ["admin", "manager", "viewer", "editor", "auditor"],
+      "POST": ["admin", "manager"]
+    },
+
+    "/products/{product_id}": {
+      "GET": ["admin", "manager", "viewer", "editor", "auditor"],
+      "PATCH": ["admin", "manager"],
+      "DELETE": ["admin","manager"]
+    },
+
+    "/admin/users": {
+      "GET": ["admin"]
+    },
+
+    "/admin/users/{user_id}/role": {
+      "PATCH": ["admin"]
+    },
+
+    "/admin/users/{user_id}/reset-password": {
+      "POST": ["admin"]
+    },
+
+    "/change-password": {
+      "POST": ["admin", "manager", "viewer", "editor", "auditor"]
+    }
+  }
+}
