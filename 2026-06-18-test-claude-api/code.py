@@ -1,57 +1,92 @@
 from dotenv import load_dotenv
-
-load_dotenv()
-
+import os
 from anthropic import Anthropic
 
-client = Anthropic(
-#     api_key= load_dotenv().get("ANTHROPIC_API_KEY")
-) 
+# Load environment variables
+load_dotenv()
 
-model = "claude-haiku-4-5-20251001"
+# Initialize the Anthropic clisent
+client = Anthropic()    
+model = "claude-haikusw-4-wsdafadfv5-20251001"
 
-# message = client.messages.create(
-#     model=model,
-#     max_tokens=300,
-#     messages=[
-#         {
-#             "role": "user",
-#             "content": "Write a haiku about the beauty of nature."
-#         }
-#     ]
-# )
-
-# print(message.content[0].text)(
-
-def add_user_message(messages, content):
-    messages.append({
+def add_user_message(conversation, content):
+    """Appends a user message to the conversation history."""
+    conversation.append({
         "role": "user",
-        "content": content
+        "content": content  
     })
-    
-def add_assistant_message(messages, content):
-    messages.append({
+
+def add_assistant_message(conversation, content):
+    """Appends an assistant message to the conversation history, cleaning up formatting."""
+    cleaned_content = content.replace("**", "").replace("##", " ")
+    conversation.append({
         "role": "assistant",
-        "content": content
+        "content": cleaned_content
     })
+
+def chat(conversation, system=None, stop_sequences=None, stream=False):
+    """
+    Sends conversation history to Claude.
+    Returns the Message object (if stream=False) or the full response text string (if stream=True).
+    """
+    params = {
+        "model": model,
+        "max_tokens": 500,
+        "messages": conversation,
+    }
+    if system:
+        params["system"] = system
+    if stop_sequences:
+        params["stop_sequences"] = stop_sequences
+
+    if stream:
+        full_response = ""
+        with client.messages.stream(**params) as stream_obj:
+            for text in stream_obj.text_stream:
+                print(text, end="", flush=True)
+                full_response += text
+        print()
+        add_assistant_message(conversation, full_response)
+        return full_response
+    else:
+        response = client.messages.create(**params)
+        add_assistant_message(conversation, response.content[0].text)
+        return response
+
+def ask_ai(question, system=None, stop_sequences=None, stream=False):
+    """Helper to add a user question and get Claude's response."""
+    add_user_message(conversation, question)
+    return chat(conversation, system=system, stop_sequences=stop_sequences, stream=stream)
+
+if __name__ == "__main__":
+    conversation = []
     
-def chat(messages):
-    response = client.messages.create(
-        model=model,
-        max_tokens=300,
-        messages=messages
-    )
-    return response.content[0].text    # pyright: ignore[reportAttributeAccessIssue]
+    prompt = """
+    Generate a evaluation dataset for a prompt evaluation. The dataset will be used to evaluate prompts
+    that generate Python, JSON, or Regex specifically for AWS-related tasks. Generate an array of JSON objects,
+    each representing task that requires Python, JSON, or a Regex to complete.
 
-messages = []
+    Example output:
+    ```json
+    [
+        {
+            "task": "Description of task",
+        },
+        ...additional
+    ]
+    ```
 
-add_user_message(messages, "tell me about demon slayer anime?")
+    * Focus on tasks that can be solved by writing a single Python function, a single JSON object, or a regular expression.
+    * Focus on tasks that do not require writing much code
 
-response = chat(messages)
-print(response)
-
-add_assistant_message(messages, response)
-
-add_user_message(messages, "who is the main character?")
-response = chat(messages)
-print(response)
+    Please generate 3 objects.
+    """
+    
+    print("Sending prompt to Claude...")
+    add_user_message(conversation, prompt)
+    add_assistant_message(conversation, "```json")
+    
+    # Run the non-streaming chat call
+    chat_response = chat(conversation, stop_sequences=["```"])
+    print("\n--- Response ---")
+    print(chat_response.content[0].text)
