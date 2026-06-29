@@ -1,0 +1,39 @@
+[
+  {
+    "prompt_inputs": {
+      "content": "The fall of the Roman Empire in the West during the 5th century resulted from a complex interplay of military, economic, and political factors. Germanic tribes, including the Visigoths under Alaric and the Vandals under Gaiseric, exploited Rome's weakened military infrastructure following decades of civil wars and resource depletion from defending distant frontiers. Emperor Diocletian's division of the empire in 285 CE had created administrative inefficiencies, while the rise of Christianity redirected civic loyalty away from traditional Roman institutions. Simultaneously, the Huns' westward migration under Attila displaced Germanic populations, creating a domino effect of invasions. Economic deterioration stemmed from currency debasement, trade disruption, and the empire's inability to maintain its vast bureaucracy and military apparatus. By 476 CE, when the Germanic chieftain Odoacer deposed Romulus Augustulus, the Western Roman Empire had fragmented into competing kingdoms, marking the transition from classical antiquity to the early medieval period."
+    },
+    "solution_criteria": [
+      "Identifies the primary central development (fall of the Western Roman Empire in the 5th century) rather than focusing on individual events or figures",
+      "Captures the main causal framework (multiple interconnected factors: military, economic, political) without enumerating all supporting details",
+      "Expressed in 1-2 concise sentences"
+    ],
+    "task_description": "Summarize a passage of text in 1-2 concise sentences, capturing the main idea.",
+    "scenario": "Testing with a dense historical narrative containing multiple interconnected events and figures to verify the prompt can identify and prioritize the central historical development over supporting details"
+  },
+  {
+    "prompt_inputs": {
+      "content": "We conducted a longitudinal study employing a mixed-methods approach with 847 participants (mean age 42.3 years, SD=8.7) across three urban centers. Utilizing standardized psychometric instruments (PHQ-9, GAD-7) administered at baseline, 6-month, and 12-month intervals, we collected data on depressive and anxiety symptoms. Statistical analysis involved hierarchical linear modeling with random intercepts and slopes, controlling for sociodemographic covariates including age, gender, education level, and employment status. Our findings revealed that cognitive-behavioral intervention participants demonstrated significantly greater symptom reduction (\u03b2=-2.14, p<0.001) compared to control groups, with effect sizes maintaining at 12-month follow-up (Cohen's d=0.78), suggesting sustained therapeutic benefits of structured cognitive-behavioral approaches for anxiety and depression management."
+    },
+    "solution_criteria": [
+      "Captures the main finding (cognitive-behavioral intervention effectiveness) rather than procedural details",
+      "Summary is 1-2 sentences as required",
+      "Omits technical jargon and methodology specifics (sample size, statistical tests, instruments) that are not central to the core conclusion"
+    ],
+    "task_description": "Summarize a passage of text in 1-2 concise sentences, capturing the main idea.",
+    "scenario": "Testing with a scientific abstract full of technical jargon and methodology details to ensure the prompt extracts the core finding or conclusion rather than getting lost in procedural information"
+  },
+  {
+    "prompt_inputs": {
+      "content": "The old lighthouse stood sentinel on the jagged rocks, its weathered white paint peeling like ancient skin, while the endless sea churned below in shades of grey and deepest blue. Elena climbed the spiral stairs for the last time, her footsteps echoing through the hollow tower, each step a farewell to the only home she had ever known. The beam above still rotated faithfully, casting its golden arc across the darkness night after night, a ritual continued long after the lighthouse had been automated and abandoned by the Coast Guard. She pressed her palm against the cold glass of the lamp room, watching the beam sweep across the water one final time before the new owners would convert it into a luxury vacation rental. Tears traced her cheeks as she realized that this solitary refuge, where she had spent forty years guiding lost ships and contemplating the mysteries of existence, would soon be filled with strangers seeking Instagram moments rather than sanctuary."
+    },
+    "solution_criteria": [
+      "Captures the core plot point: Elena's farewell visit to the lighthouse before it changes ownership",
+      "Identifies the thematic essence: loss of a meaningful personal sanctuary to commercialization",
+      "Reduces the summary to 1-2 sentences without excessive descriptive language",
+      "Preserves emotional significance while filtering out aesthetic details about the setting"
+    ],
+    "task_description": "Summarize a passage of text in 1-2 concise sentences, capturing the main idea.",
+    "scenario": "Testing with a creative fiction passage rich in descriptive language and emotional tone to assess whether the prompt can distill plot essentials and thematic core while filtering aesthetic flourishes"
+  }
+]

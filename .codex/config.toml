@@ -1,0 +1,15 @@
+model = "gpt-5.5"
+model_provider = "openai-chat-completions"
+preferred_auth_method = "apikey"
+
+[model_providers.openai-chat-completions]
+name = "OpenAI using Chat Completions"
+base_url = "https://agentrouter.org/v1"
+env_key = "AGENT_ROUTER_TOKEN"
+wire_api = "chat"
+query_params = { }
+stream_idle_timeout_ms = 300_000
+
+[mcp_servers.firecrawl]
+type = "http"
+url = "https://mcp.firecrawl.dev/fc-94f92657cdce4b15934bb6d634dc2bfd/v2/mcp"

@@ -83,3 +83,10 @@ brave_user_data
 brave_user_data_trusted
 user_data
 2026-06-22-claude-api/Shutter.Island.2010.Bluray.Hindi.English.Esubs.Moviesmod.in.mkv.fdmdownload
+
+# ── Local / Session Configs ───────────────────────────────────────────────────
+opencode.json
+.mcp.json
+*.mcp.json
+session-*.md
+*.lnk

@@ -1,0 +1,14 @@
+[
+  {
+    "task": "Extract the AWS account ID from an ARN string like 'arn:aws:s3:::my-bucket/my-key'",
+    "format": "regex"
+  },
+  {
+    "task": "Create a JSON configuration object for an AWS Lambda function with environment variables, timeout, and memory settings",
+    "format": "json"
+  },
+  {
+    "task": "Write a Python function that validates if a given string is a valid AWS S3 bucket name according to AWS naming rules",
+    "format": "python"
+  }
+]
